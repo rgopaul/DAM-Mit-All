@@ -6,8 +6,10 @@ public class brickState : MonoBehaviour
 {
     private float timer;
     private Renderer cubeRenderer;
-    Random rand = new Random();
-
+    int timeToLeak = 5; //Time to check if block is leaking
+    int timeToBreak = 5; //Time to break block after it's leaking
+    int timeToReset = 5; //Time to reset the timer if both cases succeed
+    
     //Depending on the brickCondition the color will change
     enum brickCondition {
         Good, // Green
@@ -19,7 +21,8 @@ public class brickState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BC = brickCondition.Good;
+        //Set Brick's initial state to Good
+        setCondition(brickCondition.Good);
 
         //Grab renderer component from the Cube GameObject
         cubeRenderer = gameObject.GetComponent<Renderer>();
@@ -37,26 +40,60 @@ public class brickState : MonoBehaviour
 
     void updateBrick(float dt)
     {
-        //Debug.Log(dt);
-        if(BC == brickCondition.Good){setBlockColor(Color.green);}
+        //Debug.Log((int)dt);
 
-        if (dt == 5)
+        //Check if timer is at 5 seconds and block is Good before attempting to set to leaking
+        if ((int)dt == timeToLeak && BC == brickCondition.Good)
         {
-            //if (rand.Next(0, 2) != 0)
+            //Random Chance to set block to leaking
+            if (Random.Range(0, 2) != 0)
+            {
+                setBlockColor(Color.blue);
                 BC = brickCondition.Leaking;
+
+                Debug.Log("LEAKING");
+            }
+            else
+                Debug.Log("Didn't Leak");
+
+            //Reset Timer to enable rechecking leaking if random failed
+            timer = 0;
+        }
+        else if ((int)dt == timeToBreak && BC == brickCondition.Leaking)
+        {
+            BC = brickCondition.Broken;
+            setBlockColor(Color.red);
+
+            Debug.Log("BROKEN");
+
+            //Reset timer after block breaks
+            timer = 0;
         }
 
-        if (BC == brickCondition.Leaking){setBlockColor(Color.blue);}
-
-        if (Input.GetKeyDown("2"))
-            BC = brickCondition.Broken;
-
-        if (BC == brickCondition.Broken){setBlockColor(Color.red);}
+        if (dt >= timeToReset)
+            timer = 0;
     }
 
     //Color swapper (Probably going to be replaced with Texture Swap)
     void setBlockColor(Color color)
     {
         cubeRenderer.material.SetColor("_Color", color);
+    }
+
+    void setCondition(brickCondition state)
+    {
+        BC = state;
+    }
+
+    void repairBlock()
+    {
+        //Reset to Good Block
+        if (BC != brickCondition.Good)
+        {
+            setBlockColor(Color.green);
+            setCondition(brickCondition.Good);
+            //Reset Timer so it Doesn't Have a Chance to Change Back Too Soon
+            timer = 0;
+        }
     }
 }
