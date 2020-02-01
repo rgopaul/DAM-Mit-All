@@ -42,7 +42,7 @@ public class brickState : MonoBehaviour
 
         if (dt == 5)
         {
-            if (rand.Next(0, 2) != 0)
+            //if (rand.Next(0, 2) != 0)
                 BC = brickCondition.Leaking;
         }
 
