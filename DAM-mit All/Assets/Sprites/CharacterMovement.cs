@@ -6,39 +6,38 @@ public class CharacterMovement : MonoBehaviour
 {
 
     [SerializeField]
-    private float speed = 2.5f;
+    private float speed = 2f;
     private Vector2 direction;
     private Vector3 pos;
 
 
     // Start is called before the first frame update
     void Start() {
-        direction = Vector2.up;
+        // direction = Vector2.up;
         pos = transform.position;
     }
 
     // Update is called once per frame
-
-    void FixedUpdate () {
-        if(Input.GetKey(KeyCode.W) && transform.position == pos) { // Up
+    // sticky grid movement
+    void Update () {
+        if (Input.GetKey(KeyCode.W) && transform.position == pos) { // Up
             pos += Vector3.up;
         }
-        if(Input.GetKey(KeyCode.A) && transform.position == pos) { // Left
+        else if (Input.GetKey(KeyCode.A) && transform.position == pos) { // Left
             pos += Vector3.left;
         }
-        if(Input.GetKey(KeyCode.S) && transform.position == pos) { // Down
+        else if (Input.GetKey(KeyCode.S) && transform.position == pos) { // Down
             pos += Vector3.down;
         }
-        if(Input.GetKey(KeyCode.D) && transform.position == pos) { // Right
+        else if (Input.GetKey(KeyCode.D) && transform.position == pos) { // Right
             pos += Vector3.right;
         }
-         transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * speed);    // Move there
-    }
-
-    public void Move() {
-        GetInput();
-        // WASD movement
-        transform.Translate(direction*speed*Time.deltaTime);
+        else
+        {
+            // pos = Vector3.zero;
+        }
+        // transform.position += (pos - transform.position).normalized * 10 * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * speed);    // Move there
     }
 
     private void GetInput()
@@ -57,6 +56,9 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) {
             direction += Vector2.right;
         }
-
     }
+
+    // private void OnCollisionEnter(Collision collision) {
+    //     Debug.log("Collided with + " + collision.gameObject.name)
+    // }
 }
