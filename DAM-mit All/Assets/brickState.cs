@@ -6,10 +6,14 @@ public class brickState : MonoBehaviour
 {
     private float timer;
     private Renderer cubeRenderer;
-    int timeToLeak = 5; //Time to check if block is leaking
+    public bool isEnabled = false;
+    int timeToLeak = 3; //Time to check if block is leaking
     int timeToBreak = 5; //Time to break block after it's leaking
-    int timeToReset = 5; //Time to reset the timer if both cases succeed
-    
+    int maxFailures = 3; //Max amount of times a leak can fail before forcing a block to leak
+    int Failures = 0; //Amount of times a leak has failed to occur
+    public bool isBroken = false; //If true stop checking timer
+    public bool isLeaking = false;
+
     //Depending on the brickCondition the color will change
     enum brickCondition {
         Good, // Green
@@ -33,15 +37,16 @@ public class brickState : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        timer += Time.deltaTime;
-        updateBrick(timer);
+    {   
+        if(isEnabled && !isBroken)
+        {
+            timer += Time.deltaTime;
+            updateBrick(timer);
+        }      
     }
 
     void updateBrick(float dt)
     {
-        //Debug.Log((int)dt);
-
         //Check if timer is at 5 seconds and block is Good before attempting to set to leaking
         if ((int)dt == timeToLeak && BC == brickCondition.Good)
         {
@@ -52,9 +57,22 @@ public class brickState : MonoBehaviour
                 BC = brickCondition.Leaking;
 
                 Debug.Log("LEAKING");
+                isLeaking = true;
+                Failures = 0;
+            }
+            else if(maxFailures == Failures)
+            {
+                setBlockColor(Color.blue);
+                BC = brickCondition.Leaking;
+                isLeaking = true;
+                Debug.Log("MAX FAILURE LEAK");
             }
             else
+            {
                 Debug.Log("Didn't Leak");
+                Failures++;
+            }
+                
 
             //Reset Timer to enable rechecking leaking if random failed
             timer = 0;
@@ -68,10 +86,11 @@ public class brickState : MonoBehaviour
 
             //Reset timer after block breaks
             timer = 0;
-        }
 
-        if (dt >= timeToReset)
-            timer = 0;
+            isLeaking = false;
+            //Block cannot be repaired therefore stop updating
+            isBroken = true;
+        }
     }
 
     //Color swapper (Probably going to be replaced with Texture Swap)
@@ -92,8 +111,26 @@ public class brickState : MonoBehaviour
         {
             setBlockColor(Color.green);
             setCondition(brickCondition.Good);
+            isLeaking = false;
+            isBroken = false; //Shouldn't happen since a broken block is inaccessable
             //Reset Timer so it Doesn't Have a Chance to Change Back Too Soon
             timer = 0;
         }
+    }
+
+    // Enables / *Disables a block from breaking
+    // Used to prevent multiple blocks from activating at once
+    void toggleBrick(int blockNum)
+    {
+        if (!isEnabled)
+        {
+            isEnabled = true;
+    
+        }
+        else
+        {
+            isEnabled = false;
+            Debug.Log("Block " + blockNum + " Toggled " + isEnabled);
+        }   
     }
 }
