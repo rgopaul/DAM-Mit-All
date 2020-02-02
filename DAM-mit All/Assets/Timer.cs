@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     public float time = 90;
     Text timerText;
-
+    public GameState GS;
     void Start()
     {
         timerText = GetComponent<Text>();
@@ -21,6 +21,13 @@ public class Timer : MonoBehaviour
           int itime = (int)time;
 
           timerText.text = "Time: " + itime.ToString();
+
+        if (time <= 0)
+        {
+            GS.GameOver();
+            timerText.text = "GAME OVER.";
+        }
+            
         //   Debug.Log(time);
         //   uiText.text=timer.ToString("F");
     }
