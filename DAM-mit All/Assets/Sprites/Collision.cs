@@ -27,6 +27,7 @@ public class Collision : MonoBehaviour
         //other.gameObject.broadcast("Repair");
         BC = other.gameObject.GetComponent<BoxCollider>();
         BC.isTrigger = false;
+        Debug.Log("Box Exit");
 
     }
 }
