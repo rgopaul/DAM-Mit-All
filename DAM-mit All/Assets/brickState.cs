@@ -14,15 +14,17 @@ public class brickState : MonoBehaviour
     public bool isBroken = false; //If true stop checking timer
     public bool isLeaking = false;
     public Animator animator;
+    public AudioClip leaking;
+    public AudioClip broken;
 
     //Depending on the brickCondition the color will change
-    enum brickCondition
+    public enum brickCondition
     {
         Good, // Green
         Leaking, // Blue
         Broken// Red
     }
-    brickCondition BC;
+    public brickCondition BC;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +63,7 @@ public class brickState : MonoBehaviour
                 Debug.Log("LEAKING");
                 isLeaking = true;
                 animator.SetBool("isLeaking", true);
+                GetComponent<AudioSource>().PlayOneShot(leaking);
                 Failures = 0;
             }
             else if (maxFailures == Failures)
@@ -69,6 +72,7 @@ public class brickState : MonoBehaviour
                 BC = brickCondition.Leaking;
                 isLeaking = true;
                 animator.SetBool("isLeaking", true);
+                GetComponent<AudioSource>().PlayOneShot(leaking);
                 Debug.Log("MAX FAILURE LEAK");
             }
             else
@@ -93,6 +97,7 @@ public class brickState : MonoBehaviour
 
             isLeaking = false;
             animator.SetBool("isBroken", true);
+            GetComponent<AudioSource>().PlayOneShot(broken);
             //Block cannot be repaired therefore stop updating
             isBroken = true;
             BoxCollider BoC = GetComponent<BoxCollider>();
@@ -120,6 +125,7 @@ public class brickState : MonoBehaviour
             setCondition(brickCondition.Good);
             isLeaking = false;
             animator.SetBool("isLeaking", false);
+            GetComponent<AudioSource>().Stop();
             isBroken = false; //Shouldn't happen since a broken block is inaccessable
             //Reset Timer so it Doesn't Have a Chance to Change Back Too Soon
             timer = 0;

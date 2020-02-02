@@ -6,17 +6,7 @@ public class Collision : MonoBehaviour
 {
     BoxCollider BC;
     brickState BS;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public repairSound RS;
 
     void OnTriggerEnter(Collider other)
     {
@@ -35,7 +25,11 @@ public class Collision : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         BS = other.gameObject.GetComponent<brickState>();
-        if(Input.GetKeyDown(KeyCode.Space))
-        BS.repairBlock();
+        if(Input.GetKeyDown(KeyCode.Space) && BS.isLeaking)
+        {
+            BS.repairBlock();
+            RS.PlayAudio();
+        }
+        
     }
 }
