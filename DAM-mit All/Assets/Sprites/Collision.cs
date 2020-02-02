@@ -5,6 +5,7 @@ using UnityEngine;
 public class Collision : MonoBehaviour
 {
     BoxCollider BC;
+    brickState BS;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +27,15 @@ public class Collision : MonoBehaviour
     {
         //other.gameObject.broadcast("Repair");
         BC = other.gameObject.GetComponent<BoxCollider>();
-        BC.isTrigger = false;
+        // BC.isTrigger = false;
         Debug.Log("Box Exit");
 
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        BS = other.gameObject.GetComponent<brickState>();
+        if(Input.GetKeyDown(KeyCode.Space))
+        BS.repairBlock();
     }
 }

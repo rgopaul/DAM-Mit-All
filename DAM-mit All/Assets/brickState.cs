@@ -9,7 +9,7 @@ public class brickState : MonoBehaviour
     int timeToLeak = 5; //Time to check if block is leaking
     int timeToBreak = 5; //Time to break block after it's leaking
     int timeToReset = 5; //Time to reset the timer if both cases succeed
-    
+
     //Depending on the brickCondition the color will change
     enum brickCondition {
         Good, // Green
@@ -17,6 +17,12 @@ public class brickState : MonoBehaviour
         Broken// Red
     }
     brickCondition BC;
+
+    public void OnMouseDown() {
+        {
+            repairBlock();
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -85,7 +91,9 @@ public class brickState : MonoBehaviour
         BC = state;
     }
 
-    void repairBlock()
+    public testControl other;
+
+    public void repairBlock()
     {
         //Reset to Good Block
         if (BC != brickCondition.Good)
