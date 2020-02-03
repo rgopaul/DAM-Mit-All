@@ -8,7 +8,7 @@ AnimationClip:
   m_PrefabAsset: {fileID: 0}
   m_Name: LeakingTile
   serializedVersion: 6
-  m_Legacy: 0
+  m_Legacy: 1
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -47,21 +47,8 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings:
-    - serializedVersion: 2
-      path: 0
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-    pptrCurveMapping:
-    - {fileID: 463269665924757117, guid: 32848116fe7464a5f9f0094a6faee646, type: 3}
-    - {fileID: 7541104745319156043, guid: 32848116fe7464a5f9f0094a6faee646, type: 3}
-    - {fileID: -221534369039283220, guid: 32848116fe7464a5f9f0094a6faee646, type: 3}
-    - {fileID: 5854535095785809057, guid: 32848116fe7464a5f9f0094a6faee646, type: 3}
-    - {fileID: -7764514674498827932, guid: 32848116fe7464a5f9f0094a6faee646, type: 3}
-    - {fileID: -3849519311449571549, guid: 32848116fe7464a5f9f0094a6faee646, type: 3}
+    genericBindings: []
+    pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

@@ -10,7 +10,7 @@ public class Collision : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Box Enter");
+        //Debug.Log("Box Enter");
     }
 
     void OnTriggerExit(Collider other)
@@ -18,7 +18,7 @@ public class Collision : MonoBehaviour
         //other.gameObject.broadcast("Repair");
         BC = other.gameObject.GetComponent<BoxCollider>();
         // BC.isTrigger = false;
-        Debug.Log("Box Exit");
+        //Debug.Log("Box Exit");
 
     }
 
